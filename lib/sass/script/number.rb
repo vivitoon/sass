@@ -207,6 +207,12 @@ module Sass::Script
       Sass::Script::Bool.new(this.value == other.value)
     end
 
+    def hash
+      num = dup
+      num.normalize!
+      num.hash
+    end
+
     # The SassScript `>` operation.
     #
     # @param other [Number] The right-hand side of the operator

@@ -12,6 +12,7 @@ module Sass::Script
     require 'sass/script/null'
     require 'sass/script/list'
     require 'sass/script/arg_list'
+    require 'sass/script/map'
 
     # Returns the Ruby value of the literal.
     # The type of this value varies based on the subclass.
@@ -66,6 +67,10 @@ MSG
     #   false otherwise
     def eq(other)
       Sass::Script::Bool.new(self.class == other.class && self.value == other.value)
+    end
+
+    def hash
+      value.hash
     end
 
     # The SassScript `!=` operation.

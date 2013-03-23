@@ -334,6 +334,10 @@ module Sass::Script
         other.is_a?(Color) && rgb == other.rgb && alpha == other.alpha)
     end
 
+    def hash
+      [rgb, alpha].hash
+    end
+
     # Returns a copy of this color with one or more channels changed.
     # RGB or HSL colors may be changed, but not both at once.
     #
