@@ -180,6 +180,18 @@ MSG
       eq(other).to_bool
     end
 
+    # Returns the hash code of this value. Two objects' hash codes should be
+    # equal if the objects are equal.
+    #
+    # @return [Fixnum] The hash code.
+    def hash
+      value.hash
+    end
+
+    def eql?(other)
+      self == other
+    end
+
     # @return [Fixnum] The integer value of this literal
     # @raise [Sass::SyntaxError] if this literal isn't an integer
     def to_i

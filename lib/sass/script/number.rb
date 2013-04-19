@@ -208,9 +208,15 @@ module Sass::Script
     end
 
     def hash
-      num = dup
-      num.normalize!
-      num.hash
+      [value, numerator_units, denominator_units].hash
+    end
+
+    # Hash-equality works differently than `==` equality for numbers.
+    # Hash-equality must be transitive, so it just compares the exact value,
+    # numerator units, and denominator units.
+    def eql?(other)
+      self.value == other.value && self.numerator_units == other.numerator_units &&
+        self.denominator_units == other.denominator_units
     end
 
     # The SassScript `>` operation.
