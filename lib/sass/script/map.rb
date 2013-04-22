@@ -47,6 +47,7 @@ module Sass::Script
 
     # @see Node#_perform
     def _perform(environment)
+      # TODO: disallow duplicate keys here
       map = Sass::Script::Map.new(Sass::Util.map_hash(value) do |k, v|
         [k.perform(environment), v.perform(environment)]
       end)
