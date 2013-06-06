@@ -248,6 +248,18 @@ module Sass::Script::Value
       @attrs[:alpha] = Sass::Util.check_range("Alpha channel", 0..1, @attrs[:alpha])
     end
 
+    def self.from_hex(hex_string, alpha = nil)
+      unless hex_string =~ /^#?(..?)(..?)(..?)$/
+        raise ArgumentError.new("#{hex_string.inspect} is not a valid hex color.")
+      end
+      red   = $1.ljust(2, $1).to_i(16)
+      green = $2.ljust(2, $2).to_i(16)
+      blue  = $3.ljust(2, $3).to_i(16)
+      attrs = {:red => red, :green => green, :blue => blue}
+      attrs[:alpha] = alpha if alpha
+      new(attrs)
+    end
+
     # The red component of the color.
     #
     # @return [Fixnum]
