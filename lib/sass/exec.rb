@@ -510,7 +510,7 @@ MSG
       def default_sass_path
         if ENV['SASSPATH']
           # The select here prevents errors when the environment's load paths specified do not exist.
-          ENV['SASSPATH'].split(File::PATH_SEPARATOR).select{|d| File.directory?(d)}
+          ENV['SASSPATH'].split(File::PATH_SEPARATOR).select {|d| File.directory?(d)}
         else
           [::Sass::Importers::DeprecatedPath.new(".")]
         end
