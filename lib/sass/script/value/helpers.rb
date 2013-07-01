@@ -41,5 +41,39 @@ module Sass::Script::Value
       attrs[:alpha] = alpha if alpha
       Color.new(attrs)
     end
+
+    # @private
+    VALID_UNIT = /#{Sass::SCSS::RX::NMSTART}#{Sass::SCSS::RX::NMCHAR}|%*/
+
+    # Construct a Sass Number from a ruby number.
+    #
+    # @since `3.3.0`
+    # @param number [::Number] A numeric value.
+    # @param unit_string [::String] A unit string of the form
+    #   `numeral_unit1 * numeral_unit2 ... / denominator_unit1 * denominator_unit2 ...`
+    #   this is the same format that is returned by {Sass::Script::Value::Number#unit_str the `unit_str` method}
+    #
+    # @see Sass::Script::Value::Number#unit_str
+    #
+    # @return [Sass::Script::Value::Number] The sass number representing the given ruby number.
+    def number(number, unit_string = nil)
+      numerator_units = Sass::Script::Value::Number::NO_UNITS
+      denominator_units = Sass::Script::Value::Number::NO_UNITS
+      if unit_string
+        num_over_denominator = unit_string.split(/ *\/ */)
+        unless (1..2).include?(num_over_denominator.size)
+          raise ArgumentError.new("Malformed unit string: #{unit_string}")
+        end
+        numerator_units = num_over_denominator[0].split(/ *\* */)
+        denominator_units = (num_over_denominator[1] || "").split(/ *\* */)
+        unless numerator_units.size >= 1 && numerator_units.all? {|unit| unit =~ VALID_UNIT }
+          raise ArgumentError.new("Malformed numerator in unit string: #{unit_string}")
+        end
+        unless denominator_units.all? {|unit| unit =~ VALID_UNIT }
+          raise ArgumentError.new("Malformed denominator in unit string: #{unit_string}")
+        end
+      end
+      Number.new(number, numerator_units, denominator_units)
+    end
   end
 end

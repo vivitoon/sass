@@ -60,6 +60,9 @@ module Sass::Script::Value
     def initialize(value, numerator_units = NO_UNITS, denominator_units = NO_UNITS)
       numerator_units = [numerator_units] if numerator_units.is_a?(::String)
       denominator_units = [denominator_units] if denominator_units.is_a?(::String)
+      unless value.is_a?(::Numeric)
+        raise ArgumentError.new("#{value.inspect} is not a number.")
+      end
       super(value)
       @numerator_units = numerator_units
       @denominator_units = denominator_units
