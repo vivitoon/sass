@@ -69,6 +69,9 @@ Thanks to Alexander Pavlov for implementing this.
   exposed by plugins must begin with a dash to distinguish them from
   official features.
 
+* There is a new {Sass::Script::Value::Helpers convenience API} for creating
+  Sass values from within ruby extensions.
+
 ### Backwards Incompatibilities -- Must Read!
 
 * Sass will now throw an error when `@extend` is used to extend a selector
