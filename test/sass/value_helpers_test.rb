@@ -98,4 +98,8 @@ class ValueHelpersTest < Test::Unit::TestCase
     assert_kind_of Sass::Script::Value::List, l2
     assert_equal "1px, #ff7711", l2.to_sass
   end
+
+  def test_null
+    assert_kind_of Sass::Script::Value::Null, null
+  end
 end

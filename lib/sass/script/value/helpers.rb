@@ -109,5 +109,13 @@ module Sass::Script::Value
       end
       Sass::Script::Value::List.new(elements, :comma)
     end
+
+    # Create a sass null value.
+    #
+    # @since `3.3.0`
+    # @return [Sass::Script::Value::Null]
+    def null
+      Sass::Script::Value::Null.new
+    end
   end
 end
