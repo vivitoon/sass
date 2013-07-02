@@ -117,5 +117,27 @@ module Sass::Script::Value
     def null
       Sass::Script::Value::Null.new
     end
+
+    # Create a sass string.
+    #
+    # In most contexts, a sass string outputs with quotes surrounding it.
+    #
+    # @since `3.3.0`
+    # @param str [::String] A ruby string.
+    # @return [Sass::Script::Value::String] A sass string.
+    def string(str)
+      Sass::Script::String.new(str, :string)
+    end
+
+    # Create a sass identifier.
+    #
+    # Identifiers are like strings, but they do not have quotes.
+    #
+    # @since `3.3.0`
+    # @param str [::String] A ruby string.
+    # @return [Sass::Script::Value::String] A sass identifier.
+    def identifier(str)
+      Sass::Script::String.new(str, :identifier)
+    end
   end
 end

@@ -102,4 +102,22 @@ class ValueHelpersTest < Test::Unit::TestCase
   def test_null
     assert_kind_of Sass::Script::Value::Null, null
   end
+
+  def test_string
+    s = string("sassy string")
+    s.options = {}
+    assert_kind_of Sass::Script::Value::String, s
+    assert_equal "sassy string", s.value
+    assert_equal :string, s.type
+    assert_equal %q{"sassy string"}, s.to_sass
+  end
+
+  def test_identifier
+    s = identifier("a-sass-ident")
+    s.options = {}
+    assert_kind_of Sass::Script::Value::String, s
+    assert_equal "a-sass-ident", s.value
+    assert_equal :identifier, s.type
+    assert_equal %q{a-sass-ident}, s.to_sass
+  end
 end
