@@ -42,6 +42,21 @@ module Sass::Script::Value
       Color.new(attrs)
     end
 
+    # Construct a Sass Color from rgb values.
+    #
+    # @since `3.3.0`
+    # @param red [::Number] The red component. Must be between 0 and 255 inclusive.
+    # @param green [::Number] The green component. Must be between 0 and 255 inclusive.
+    # @param blue [::Number] The blue component. Must be between 0 and 255 inclusive.
+    # @param alpha [::Number] The alpha channel. A number between 0 and 1.
+    #
+    # @return [Sass::Script::Value::Color] the color object
+    def rgb_color(red, green, blue, alpha = nil)
+      attrs = {:red => red, :green => green, :blue => blue}
+      attrs[:alpha] = alpha if alpha
+      Color.new(attrs)
+    end
+
     # @private
     VALID_UNIT = /#{Sass::SCSS::RX::NMSTART}#{Sass::SCSS::RX::NMCHAR}|%*/
 
