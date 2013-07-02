@@ -75,5 +75,39 @@ module Sass::Script::Value
       end
       Number.new(number, numerator_units, denominator_units)
     end
+
+    # @since `3.3.0`
+    # @overload space_list(*elements)
+    #   Create a space-separated list from the arguments given.
+    #   @param elements [Array<Sass::Script::Value::Base>] Each argument will be a list element.
+    #   @return [Sass::Script::Value::List] The space separated list.
+    #
+    # @overload space_list(array)
+    #   Create a space-separated list from the array given.
+    #   @param array [Array<Sass::Script::Value::Base>] A ruby array of Sass values to make into a list.
+    #   @return [Sass::Script::Value::List] The space separated list.
+    def space_list(*elements)
+      if elements.size == 1 && elements.first.is_a?(Array)
+        elements = elements.first
+      end
+      Sass::Script::Value::List.new(elements, :space)
+    end
+
+    # @since `3.3.0`
+    # @overload comma_list(*elements)
+    #   Create a comma-separated list from the arguments given.
+    #   @param elements [Array<Sass::Script::Value::Base>] Each argument will be a list element.
+    #   @return [Sass::Script::Value::List] The comma separated list.
+    #
+    # @overload comma_list(array)
+    #   Create a comma-separated list from the array given.
+    #   @param array [Array<Sass::Script::Value::Base>] A ruby array of Sass values to make into a list.
+    #   @return [Sass::Script::Value::List] The comma separated list.
+    def comma_list(*elements)
+      if elements.size == 1 && elements.first.is_a?(Array)
+        elements = elements.first
+      end
+      Sass::Script::Value::List.new(elements, :comma)
+    end
   end
 end

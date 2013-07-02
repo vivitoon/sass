@@ -74,4 +74,28 @@ class ValueHelpersTest < Test::Unit::TestCase
     complex = number(1, "px * in / em * %");
     assert_equal "1#{['px','in'].sort.join("*")}/#{['em','%'].sort.join("*")}", complex.to_sass
   end
+
+  def test_space_list
+    l = space_list(number(1, "px"), hex_color("#f71"))
+    l.options = {}
+    assert_kind_of Sass::Script::Value::List, l
+    assert_equal "1px #ff7711", l.to_sass
+
+    l2 = space_list([number(1, "px"), hex_color("#f71")])
+    l2.options = {}
+    assert_kind_of Sass::Script::Value::List, l2
+    assert_equal "1px #ff7711", l2.to_sass
+  end
+
+  def test_comma_list
+    l = comma_list(number(1, "px"), hex_color("#f71"))
+    l.options = {}
+    assert_kind_of Sass::Script::Value::List, l
+    assert_equal "1px, #ff7711", l.to_sass
+
+    l2 = comma_list([number(1, "px"), hex_color("#f71")])
+    l2.options = {}
+    assert_kind_of Sass::Script::Value::List, l2
+    assert_equal "1px, #ff7711", l2.to_sass
+  end
 end
