@@ -256,11 +256,13 @@ RUBY
       def expr
         interp = try_ops_after_interp([:comma], :expr) and return interp
         start_pos = source_position
-        return unless e = interpolation
+        e = interpolation
+        return unless e
         list = node(Sass::Script::Tree::ListLiteral.new([e], :comma), start_pos)
         while (tok = try_tok(:comma))
           if (interp = try_op_before_interp(tok, list))
-            return interp unless other_interp = try_ops_after_interp([:comma], :expr, interp)
+            other_interp = try_ops_after_interp([:comma], :expr, interp)
+            return interp unless other_interp
             return other_interp
           end
           list.elements << assert_expr(:interpolation)
@@ -282,7 +284,8 @@ RUBY
 
       def try_ops_after_interp(ops, name, prev = nil)
         return unless @lexer.after_interpolation?
-        return unless op = try_tok(*ops)
+        op = try_tok(*ops)
+        return unless op
         interp = try_op_before_interp(op, prev) and return interp
 
         wa = @lexer.whitespace?
@@ -310,7 +313,8 @@ RUBY
 
       def space
         start_pos = source_position
-        return unless e = or_expr
+        e = or_expr
+        return unless e
         arr = [e]
         while (e = or_expr)
           arr << e
@@ -342,7 +346,8 @@ RUBY
       end
 
       def funcall
-        return raw unless tok = try_tok(:funcall)
+        tok = try_tok(:funcall)
+        return raw unless tok
         args, keywords, splat = fn_arglist || [[], {}]
         assert_tok(:rparen)
         node(Script::Tree::Funcall.new(tok.value, args, keywords, splat),
@@ -388,7 +393,8 @@ RUBY
       end
 
       def arglist(subexpr, description)
-        return unless e = send(subexpr)
+        e = send(subexpr)
+        return unless e
 
         args = []
         keywords = {}
@@ -419,14 +425,15 @@ RUBY
       end
 
       def raw
-        start_pos = source_position
-        return special_fun unless tok = try_tok(:raw)
+        tok = try_tok(:raw)
+        return special_fun unless tok
         literal_node(Script::Value::String.new(tok.value), tok.source_range)
       end
 
       def special_fun
         start_pos = source_position
-        return paren unless tok = try_tok(:special_fun)
+        tok = try_tok(:special_fun)
+        return paren unless tok
         first = literal_node(Script::Value::String.new(tok.value.first),
           start_pos, start_pos.after(tok.value.first))
         Sass::Util.enum_slice(tok.value[1..-1], 2).inject(first) do |l, (i, r)|
@@ -457,12 +464,14 @@ RUBY
 
       def variable
         start_pos = source_position
-        return string unless c = try_tok(:const)
+        c = try_tok(:const)
+        return string unless c
         node(Tree::Variable.new(*c.value), start_pos)
       end
 
       def string
-        return number unless first = try_tok(:string)
+        first = try_tok(:string)
+        return number unless first
         str = literal_node(first.value, first.source_range)
         return str unless try_tok(:begin_interpolation)
         mid = parse_interpolated
@@ -471,7 +480,8 @@ RUBY
       end
 
       def number
-        return literal unless tok = try_tok(:number)
+        tok = try_tok(:number)
+        return literal unless tok
         num = tok.value
         num.original = num.to_s unless @in_parens
         literal_node(num, tok.source_range.start_pos)
